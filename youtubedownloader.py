@@ -2,7 +2,7 @@
 from pytube import YouTube
 from pathlib import Path
 
-def download(url, type='video', path=''):
+def download(url, type='video'):
     try:
         yt = YouTube(url)
         
