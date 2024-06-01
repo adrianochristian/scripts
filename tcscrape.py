@@ -34,29 +34,37 @@ def get_all(df):
     #TODO: Analyze working with query for experimental purposes in the future
     return df.query('`Over%` >= 70 or `Under%` >= 70')
 
+def save_to_txt(game):
+    with open('list.txt', 'a') as f:
+        f.write(game)
+        f.write('\n')
+        f.close()
+
 def send_message(message):
-    telegram.send_message(message)
+    if message not in open('list.txt').read():
+        telegram.send_message(message)
+        save_to_txt(message)
 
 def resume(under, over):
     for i in range(len(under)):
         send_message(
             f'''
-Date: {crttime}
-Match: {under['Home'].values[0]} vs {under['Away'].values[0]}
-Corner Line: {under['Corner Line'].values[0]}
-Avg. Corner: {under['Avg. Corner'].values[0]}
-Tip: {under['Tips'].values[0]}
-Stake: 1u
+            Date: {crttime}
+            Match: {under['Home'].values[i]} vs {under['Away'].values[i]}
+            Corner Line: {under['Corner Line'].values[i]}
+            Avg. Corner: {under['Avg. Corner'].values[i]}
+            Tip: {under['Tips'].values[i]}
+            Stake: 1u
             ''')
     for i in range(len(over)):
         send_message(
             f'''
-Date: {crttime}
-Match: {over['Home'].values[0]} vs {over['Away'].values[0]}
-Corner Line: {over['Corner Line'].values[0]}
-Avg. Corner: {over['Avg. Corner'].values[0]}
-Tip: {over['Tips'].values[0]}
-Stake: 1u
+            Date: {crttime}
+            Match: {over['Home'].values[i]} vs {over['Away'].values[i]}
+            Corner Line: {over['Corner Line'].values[i]}
+            Avg. Corner: {over['Avg. Corner'].values[i]}
+            Tip: {over['Tips'].values[i]}
+            Stake: 1u
             ''')
 
 def resume_all(df):
