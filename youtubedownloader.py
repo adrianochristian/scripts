@@ -1,11 +1,14 @@
 #A simple YouTube Downloader using pytube to download videos and audio
 from pytube import YouTube
 from pathlib import Path
+from pytube.innertube import _default_clients
+
+_default_clients['ANDROID_MUSIC'] = _default_clients['WEB']
 
 def download(url, type='video'):
     try:
         yt = YouTube(url)
-        
+
         if type == 'video' or type == 'v':
             stream = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
         elif type == 'audio' or type == 'a':
