@@ -1,9 +1,10 @@
 import cloudscraper
 import pandas as pd
+import telegram
 from time import gmtime, strftime
 import env
 
-crttime = strftime("%m/%d %H:%M", gmtime())
+crttime = strftime("%d/%m", gmtime())
 
 def get_page(url):
     try:
@@ -33,24 +34,24 @@ def get_all(df):
     #TODO: Analyze working with query for experimental purposes in the future
     return df.query('`Over%` >= 70 or `Under%` >= 70')
 
+def send_message(message):
+    telegram.send_message(message)
+
 def resume(under, over):
-    print(f"Date: {crttime}")
-    print()
-    print(f"Under 70%: {len(under)}")
     for i in range(len(under)):
-        print(
+        send_message(
             f'''
+Date: {crttime}
 Match: {under['Home'].values[0]} vs {under['Away'].values[0]}
 Corner Line: {under['Corner Line'].values[0]}
 Avg. Corner: {under['Avg. Corner'].values[0]}
 Tip: {under['Tips'].values[0]}
 Stake: 1u
             ''')
-    print()
-    print(f"Over 70%: {len(over)}")
     for i in range(len(over)):
-        print(
+        send_message(
             f'''
+Date: {crttime}
 Match: {over['Home'].values[0]} vs {over['Away'].values[0]}
 Corner Line: {over['Corner Line'].values[0]}
 Avg. Corner: {over['Avg. Corner'].values[0]}
@@ -66,7 +67,7 @@ def resume_all(df):
         print(f"{df['Home'].values[i]} vs {df['Away'].values[i]}")
 
 def main():
-    response = get_page(env.url)
+    response = get_page(env.URL)
     df = set_df(response.content)
     df = hydrate(df)
     resume(get_under(df), get_over(df))
