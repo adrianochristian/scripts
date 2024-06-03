@@ -49,7 +49,7 @@ def resume(under, over):
     for i in range(len(under)):
         send_message(
             f'''
-            Date: {crttime}
+            Date: {under['Time'].values[i]}
             Match: {under['Home'].values[i]} vs {under['Away'].values[i]}
             Corner Line: {under['Corner Line'].values[i]}
             Avg. Corner: {under['Avg. Corner'].values[i]}
@@ -59,7 +59,7 @@ def resume(under, over):
     for i in range(len(over)):
         send_message(
             f'''
-            Date: {crttime}
+            Date: {over['Time'].values[i]}
             Match: {over['Home'].values[i]} vs {over['Away'].values[i]}
             Corner Line: {over['Corner Line'].values[i]}
             Avg. Corner: {over['Avg. Corner'].values[i]}
